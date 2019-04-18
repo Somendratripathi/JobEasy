@@ -15,7 +15,7 @@ async function poll() {
         chrome.runtime.sendMessage("GetResponse", function (response) {
           resolve(response);
         })
-      }, 10)
+      }, 20)
     });
     let result = await promise; // wait till the promise resolves (*)
     if (result !== "placeholder") {
