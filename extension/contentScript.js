@@ -12,6 +12,8 @@ xhr.onreadystatechange = function() {
       var response = this.response;
       rid = response;
       chrome.runtime.sendMessage(rid)
+    } else {
+      chrome.runtime.sendMessage("Error")
     }
   }
 }

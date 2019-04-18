@@ -3,12 +3,13 @@ let submitButton = document.getElementById('submitButton');
 
 submitButton.onclick = function(element) {
   chrome.runtime.sendMessage("Match", function(pass) {
-    result = poll();
+    poll();
   });
 };
 
 
 async function poll() {
+  var result;
   while (true) {
     let promise = new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -17,14 +18,17 @@ async function poll() {
         })
       }, 20)
     });
-    let result = await promise; // wait till the promise resolves (*)
+    result = await promise; // wait till the promise resolves (*)
     if (result !== "placeholder") {
       chrome.runtime.sendMessage("ResetResponse")
       break
     }
   }
-  chrome.extension.getBackgroundPage().console.log("polling done!"); // "done!"
-  return result
+  
+  chrome.extension.getBackgroundPage().console.log("polling done!" + result); // "done!"
+  var responseDiv = document.getElementById('response');
+  var textNode = document.createTextNode(result);
+  responseDiv.appendChild(textNode); 
 }
 
 

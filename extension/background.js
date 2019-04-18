@@ -11,6 +11,8 @@ chrome.runtime.onMessage.addListener(
       sendResponse(result); 
     } else if (message === "ResetResponse") {
       result = "placeholder"
+    } else if (message === "Error" ) {
+      result = "server error" 
     } else {
       result = message
     }
