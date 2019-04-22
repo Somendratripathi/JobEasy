@@ -1,4 +1,4 @@
 from kafka import KafkaConsumer
-consumer = KafkaConsumer('sample')
+consumer = KafkaConsumer('clientaccess')
 for message in consumer:
     print (message)
