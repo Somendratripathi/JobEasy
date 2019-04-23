@@ -11,7 +11,10 @@ def company_stat(session, company_name, position):
     s = select([func.avg(H1b.case_status == 'CERTIFIED')]).\
     where(and_(H1b.employer_name.like('%' + company_name + '%'),
                H1b.job_title.like('%' + position + '%')))
-    return float(session.execute(s).first()[0])
+    try:
+        return float(session.execute(s).first()[0])
+    except:
+        return 0
     
 with open('credentials.pkl', 'rb') as f:
     cred = pickle.load(f)
@@ -21,4 +24,6 @@ Base.metadata.bind = engine
 DBSession = sessionmaker()
 DBSession.bind = engine
 session = DBSession()
+
 print(company_stat(session, company_name = 'Google', position = 'Software Engineer'))
+
