@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
 from kafka import KafkaProducer
+from json import dumps
 
 app = Flask(__name__)
 api = Api(app)
