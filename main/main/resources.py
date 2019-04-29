@@ -1,6 +1,6 @@
 from flask import request
 from flask_restful import Resource
-from main import status_dict
+from main import status_dict, kafka_producer
 
 import uuid
 import json
@@ -8,19 +8,13 @@ import json
 class Extractor(Resource):
     def post(self):
         try:
-            #html = request.data.decode('utf-8')
-            #print(html)
+            html = request.data.decode('utf-8')
             uid = str(uuid.uuid4())
             status_dict[uid] = 'PENDING'
-            print("FROM GET: ", status_dict)
-            '''
-            write html document and uid to kafka:
-
-            kafka.write(topic, json.dumps({
+            kafka_producer.send('sample', value={
                 "uid": uid,
                 "html": html
             })
-            '''
             
         except Exception as e:
             print(e)
