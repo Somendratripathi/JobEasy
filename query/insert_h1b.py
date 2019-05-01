@@ -5,6 +5,7 @@ from create_h1b import Base, H1b
 from datetime import datetime
 import numpy as np
 import pandas as pd
+import pickle
 
 # Create an engine that stores data on Google Cloud
 with open('credentials.pkl', 'rb') as f:

@@ -22,21 +22,18 @@ with open('credentials.pkl', 'rb') as f:
     cred = pickle.load(f)
 
 engine = create_engine('mysql+pymysql://' + cred['user'] + ':' + cred['password'] + '@127.0.0.1/' + cred['database'])
-print("1")
 Base.metadata.bind = engine
 DBSession = sessionmaker()
 DBSession.bind = engine
 session = DBSession()
-print("2")
 
 consumer2=KafkaConsumer('query',value_deserializer=lambda x: loads(x.decode('utf-8')))
-print(consumer2)
 
 
 for message in consumer2:
     company=message.value['company']
     jobtitle=message.value['jobtitle']
-    print(company)  
+    print(company)
     print(company_stat(session, company_name =company, position = jobtitle))
 
 
