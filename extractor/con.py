@@ -15,13 +15,12 @@ consumer1=KafkaConsumer('sample',bootstrap_servers=['localhost:9092'],value_dese
 #consumer2= KafkaConsumer('btest')
 
 for message in consumer1:
-    #print(html)
-    #print(type(html))
     print(message)
     company, jobtitle, jobdescription = Extraction.extract_text(message.value['html'])
     print(company, jobtitle)
     kafka_producer.send('query', value={
         "company": company,
         "jobtitle": jobtitle,
-        "jobdescription": jobdescription
+        "jobdescription": jobdescription,
+        "uid": uid
     })
