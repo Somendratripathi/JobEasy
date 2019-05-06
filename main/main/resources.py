@@ -15,10 +15,10 @@ class Extractor(Resource):
                 "uid": uid,
                 "html": html
             })
-            
         except Exception as e:
             print(e)
             return {"error": e}, 400
+        
         return uid #anything representing some resource id
 
 class Status(Resource):
@@ -33,7 +33,7 @@ class Status(Resource):
         if status == None:
             return {"error": "uid not found"}, 404
         
-        return {"status": status}, 200
+        return status, 200
 
     def post(self):
         uid, status = request.args.get('uid'), request.args.get('status')
