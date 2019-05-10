@@ -6,6 +6,7 @@ import pickle
 from kafka import KafkaConsumer
 from json import loads
 import requests
+import collections
 
 # find a company position statistic of how likely it is that the company files your h1b
 def company_stat(session, company_name, position):
@@ -44,10 +45,11 @@ for message in consumer2:
     company = message.value['company']
     jobtitle = message.value['jobtitle']
     uid = message.value['uid']
+    
     # print(company)
     # print the value calculated from the sql query
     result = company_stat(session, company_name =company, position = jobtitle) 
     print(result)
-    requests.post('http://localhost:8080/status?uid={}&status={}'.format(uid, result)
+    requests.post('http://localhost:8080/status?uid={}&status={}'.format(uid, result))
 
 
