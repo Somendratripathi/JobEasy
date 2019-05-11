@@ -1,4 +1,5 @@
 import pickle
+import time 
 
 def query_cache(company_name, job_title):
 	with open(r"./cache.pkl", "rb") as input_file:
