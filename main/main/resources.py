@@ -32,14 +32,17 @@ class Status(Resource):
 
         if status == None:
             return {"error": "uid not found"}, 404
-        
+        score=status.split(":")
+        print(score)
         return status, 200
 
     def post(self):
         uid, status = request.args.get('uid'), request.args.get('status')
+        
         if uid not in status_dict.keys():
             return {"error": "uid is not in status dictionary"}, 400
-        
+        #if score>0.5:
+            
         status_dict[uid] = status
         return 200
     
