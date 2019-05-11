@@ -26,7 +26,20 @@ async function poll() {
   }
   
   chrome.extension.getBackgroundPage().console.log("polling done!" + result); // "done!"
+  
   var responseDiv = document.getElementById('response');
+  if (result >= 70) {
+      responseDiv.style.backgroundColor = '#80ff80';
+    }
+    else if (result >= .25 && udata < 75)
+    {
+      responseDiv.style.backgroundColor = '#ffff80';
+    }  
+    else if (result <=.25)  
+    {
+      responseDiv.style.backgroundColor = '#ff9980';
+    }
+  
   var textNode = document.createTextNode(result);
   responseDiv.appendChild(textNode); 
 }
