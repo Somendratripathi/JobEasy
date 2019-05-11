@@ -9,7 +9,9 @@ import requests
 import collections
 import time
 import pickle
-from cache_h1b import query_cache, add_freq
+import datetime
+from cache_h1b import query_cache, add_cache
+time_stamp = datetime.datetime.now()
 
 # find a company position statistic of how likely it is that the company files your h1b
 def company_stat(session, company_name, position):
@@ -41,7 +43,6 @@ session = DBSession()
 # kafka consumer
 consumer2=KafkaConsumer('query',value_deserializer=lambda x: loads(x.decode('utf-8')))
 
-
 for message in consumer2:
     company = message.value['company']
     jobtitle = message.value['jobtitle']
@@ -50,12 +51,14 @@ for message in consumer2:
     company = company.strip().upper()
     jobtitle = jobtitle.strip().upper()
     start = time.time()
- 	score, cache_existance= query_cache(company, jobtitle)
+    result, cache_existance = query_cache(company, jobtitle)
+    print(result)
     # print(company)
     # print the value calculated from the sql query
     if not cache_existance:
 	    result = company_stat(session, company_name =company, position = jobtitle) 
-    	print(result)
+	    print(result)
+	    yield add_cache(company, jobtitle, result, time_stamp)
     print(' %0.2f sec' %(time.time() - start))
 
     requests.post('http://localhost:8080/status?uid={}&status={}'.format(uid, result))
