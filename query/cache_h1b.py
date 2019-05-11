@@ -1,4 +1,4 @@
-import time 
+import datetime
 
 #No need for pickling
 cache = {}
@@ -21,20 +21,33 @@ def add_cache(company_name, job_title, score, timestamp):
 	# current time
 	curr_time = datetime.datetime.now()
 	# read cache
-	with open(r"./cache.pkl", "rb") as input_file:
-			cache = pickle.load(input_file)
+	#with open(r"./cache.pkl", "rb") as input_file:
+	#		cache = pickle.load(input_file)
 	# delete cache
 	if (curr_time - timestamp).days >= 1:
 		cache = {}
 
-	try:
-		score = cache[company_name+':'+job_title]
-		return 0
+	score = cache.get([company_name+':'+job_title], None)
 
-	except KeyError as e:
+	if score == None: 
+		#score does not exist cache it 
 		cache[company_name+':'+job_title] = score
+		return 1 #success 
+	
+	return 0 #score exists no need to update
 
-	with open(r"./cache.pkl", "wb") as output_file:
-		pickle.dump(cache, output_file)
+	
 
-	return 0
+	#try:
+	#	score = cache[company_name+':'+job_title]
+	#	return 0
+
+	#except KeyError as e:
+	#	cache[company_name+':'+job_title] = score
+
+	#with open(r"./cache.pkl", "wb") as output_file:
+	#	pickle.dump(cache, output_file)
+
+	#return 0
+
+
