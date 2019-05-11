@@ -7,12 +7,12 @@ from kafka import KafkaConsumer
 from json import loads
 import requests
 import collections
+import time
+import pickle
 
 # find a company position statistic of how likely it is that the company files your h1b
 def company_stat(session, company_name, position):
     # convert company name and position to upper, as it is uppercase in the original table
-    company_name = company_name.upper()
-    position = position.upper()
     
     # calculate the number of cases that were certified vs the total number of cases filed by the company
     s = select([func.avg(H1b.case_status == 'CERTIFIED')]).\
@@ -45,11 +45,17 @@ for message in consumer2:
     company = message.value['company']
     jobtitle = message.value['jobtitle']
     uid = message.value['uid']
-    
+
+    # convert company name and position to upper, as it is uppercase in the original table
+    company = company.strip().upper()
+    jobtitle = jobtitle.strip().upper()
+ 
     # print(company)
     # print the value calculated from the sql query
+    start = time.time()
     result = company_stat(session, company_name =company, position = jobtitle) 
     print(result)
+    print(' %0.2f sec' %(time.time() - start))
     requests.post('http://localhost:8080/status?uid={}&status={}'.format(uid, result))
 
 
