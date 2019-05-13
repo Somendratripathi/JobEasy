@@ -1,4 +1,5 @@
 import datetime
+from create_cache import Base, cache
 
 #No need for pickling
 cache = {}
@@ -26,6 +27,9 @@ def add_cache(company_name, job_title, score, timestamp):
 	# delete cache
 	if (curr_time - timestamp).days >= 1:
 		cache = {}
+	
+	if False:
+		#call cache function to update
 
 	score = cache.get([company_name+':'+job_title], None)
 
